@@ -6,7 +6,7 @@
     <ul>
         <li>
             <h3>{{ product.name }}</h3>
-            <strong>{{ product.price }}</strong>
+            <strong>{{ product.price|format_currency('EUR', locale='fr') }}</strong>
         </li>
     </ul>
     <a href="{{ path('product_index') }}">See list...</a>
