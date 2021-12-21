@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Repository\ProductRepository;
+use App\Service\CurrencyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,12 +24,18 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="product_show")
+     * @Route("/{id}/{currency}", name="product_show")
      */
-    public function show(Product $product): Response
-    {
+    public function show(
+        Product $product,
+        string $currency = 'EUR',
+        CurrencyService $currencyService
+    ): Response {
         return $this->render('product/show.html.twig', [
             'product' => $product,
+            'currency' => $currency,
+            'price' => $currencyService->convertPrice($product->getPrice(), $currency),
+            'country' => $currencyService->getLocale($currency)
         ]);
     }
 }
